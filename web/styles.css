@@ -15,3 +15,21 @@ body {
 h1 {
     user-select: none;
 }
+
+.btn {
+    border: none;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    outline: none;
+}
+
+.btn--undo {
+    margin-top: 10px;
+}
