@@ -1,0 +1,17 @@
+body {
+    font-family: Arial;
+    background-color: lightblue;
+    overscroll-behavior: none;
+}
+
+#content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+h1 {
+    user-select: none;
+}
