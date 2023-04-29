@@ -1,6 +1,6 @@
 body {
     font-family: Arial;
-    background-color: lightblue;
+    background-color: skyblue;
     overscroll-behavior: none;
 }
 
@@ -18,18 +18,34 @@ h1 {
 
 .btn {
     border: none;
-    background-color: white;
-    color: black;
+    background-color: navy;
+    color: white;
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    text-transform: uppercase;
     letter-spacing: 1px;
     outline: none;
+    user-select: none;
 }
-
+.btn:hover{
+    background-color: mediumblue
+}
+.btn:disabled,
+.btn:disabled:hover {
+    background-color: gray;
+    cursor: default;
+}
 .btn--undo {
     margin-top: 10px;
+    text-transform: uppercase;
+}
+
+input {
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #ccc;
 }

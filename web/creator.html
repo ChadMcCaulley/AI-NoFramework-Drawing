@@ -2,19 +2,78 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=0.9, user-scalable=0">
+        <meta charset="utf-8">
         <title>Data Collection</title>
         <link rel="stylesheet" type="text/css" href="./styles.css"/>
     </head>
     <body>
         <div id="content">
             <h1>Data Creator</h1>
-            <div id="sketchPadContainer" />
-        </div> 
-        <button id="undoBtn" type="button" class="btn btn--undo">Undo</button>
+            <form id="userForm" onsubmit="formSubmitHandler(event)">
+                <input id="usernameInput" type="text" placeholder="Please enter your name" required />
+                <button id="startBtn" class="btn" type="submit">START</button>
+            </form>
+            <div id="drawingContainer" style="display:none">
+                <div style="margin-bottom: 10px">
+                    <span id="instructions"></span> 
+                    <button id="continueBtn" class="btn" type="button" onclick="submitDrawingHandler()">Continue</button>
+                </div>
+                <div id="sketchPadContainer" />
+            </div>
+        </div>  
         <script src="./js/sketchPad.js"></script>
         <script src="./js/draw.js"></script>
         <script type="text/javascript">
+            let index = 0;
+            const labels = ["car", "fish", "house", "bicycle", "guitar", "pencil", "clock"]
+            const data = {
+                user: null,
+                session: new Date().getTime(),
+                drawings: {}
+            }
+
             const sketchPad = new SketchPad(sketchPadContainer)
+
+            function formSubmitHandler(event) {
+                event.preventDefault()
+                data.user = usernameInput.value
+                userForm.style.display = 'none'
+                drawingContainer.style.display = "block"
+                updateInstructions()
+            }
+
+            function submitDrawingHandler() {
+                const label = labels[index]
+                if (sketchPad.paths.length < 1) return alert(`Please draw a ${label} before moving on`)
+                data.drawings[label] = sketchPad.paths
+                sketchPad.reset()
+                index++;
+                if (index < labels.length) updateInstructions()
+                else {
+                    sketchPadContainer.style.display = "none"
+                    continueBtn.innerHTML = "Submit Drawings"
+                    continueBtn.onclick = saveHandler
+                }
+            }
+
+            function saveHandler() {
+                continueBtn.style.display = "none"
+                instructions.innerHTML = "Please add your downloaded file to the dataset!"
+
+                const element = document.createElement("a")
+                element.setAttribute("href", "data:text/plain;charset=utf-8,"+encodeURIComponent(JSON.stringify(data)))
+                element.setAttribute("download", `${data.session}.json`)
+
+                element.style.display = "none"
+                document.body.appendChild(element)
+                element.click()
+                document.body.removeChild(element)
+            }
+
+            function updateInstructions() {
+                const label = labels[index]
+                instructions.innerHTML = `Please draw a ${label}`
+            }
         </script>
     </body>
 </html>
