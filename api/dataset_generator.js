@@ -1,9 +1,17 @@
 const draw = require("../common/draw.js");
-const { RAW_DIR, JSON_DIR, IMG_DIR } = require("../common/constants.js");
+const { printProgress } = require("../common/utils.js");
+const {
+  RAW_DIR,
+  JSON_DIR,
+  IMG_DIR,
+  SAMPLES,
+  SAMPLES_JS,
+} = require("../common/constants.js");
 
 const { createCanvas } = require("canvas");
 const canvas = createCanvas(400, 400);
 const ctx = canvas.getContext("2d");
+const numDrawingsPerFile = 8;
 
 /**
  * Take the array of paths and write them into png files
@@ -31,8 +39,11 @@ fileNames.forEach((fileName) => {
     const paths = JSON.stringify(drawings[label]);
     fs.writeFileSync(`${JSON_DIR}/${id}.json`, paths);
     generateImageFile(`${IMG_DIR}/${id}.png`, paths);
+    printProgress(id, fileNames.length * numDrawingsPerFile);
     id++;
   }
 });
 
 fs.writeFileSync(SAMPLES, JSON.stringify(samples));
+
+fs.writeFileSync(SAMPLES_JS, "const samples=" + JSON.stringify(samples) + ";");
