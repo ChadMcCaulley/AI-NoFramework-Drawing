@@ -1,5 +1,5 @@
 const draw = require("../common/draw.js");
-const { printProgress } = require("../common/utils.js");
+const utils = require("../common/utils.js");
 const {
   RAW_DIR,
   JSON_DIR,
@@ -12,6 +12,7 @@ const { createCanvas } = require("canvas");
 const canvas = createCanvas(400, 400);
 const ctx = canvas.getContext("2d");
 const numDrawingsPerFile = 8;
+const fs = require("fs");
 
 /**
  * Take the array of paths and write them into png files
@@ -26,20 +27,19 @@ const generateImageFile = (outputFile, paths) => {
   fs.writeFileSync(outputFile, buffer);
 };
 
-const fs = require("fs");
-
 const fileNames = fs.readdirSync(RAW_DIR);
 const samples = [];
 let id = 1;
+const fileName = fileNames[0];
 fileNames.forEach((fileName) => {
   const content = fs.readFileSync(RAW_DIR + "/" + fileName);
   const { session, student, drawings } = JSON.parse(content);
   for (let label in drawings) {
     samples.push({ id, label, student_name: student, student_id: session });
-    const paths = JSON.stringify(drawings[label]);
-    fs.writeFileSync(`${JSON_DIR}/${id}.json`, paths);
+    const paths = drawings[label];
+    fs.writeFileSync(`${JSON_DIR}/${id}.json`, JSON.stringify(paths));
     generateImageFile(`${IMG_DIR}/${id}.png`, paths);
-    printProgress(id, fileNames.length * numDrawingsPerFile);
+    utils.printProgress(id, fileNames.length * numDrawingsPerFile);
     id++;
   }
 });

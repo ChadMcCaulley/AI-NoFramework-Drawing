@@ -31,6 +31,19 @@ const groupBy = (objArr, key) => {
   return groups;
 };
 
+const styles = {
+  car: { color: "gray", text: "🚗" },
+  fish: { color: "blue", text: "🐠" },
+  house: { color: "yellow", text: "🏠" },
+  tree: { color: "green", text: "🌲" },
+  bicycle: { color: "cyan", text: "🚲" },
+  guitar: { color: "red", text: "🎸" },
+  pencil: { color: "magenta", text: "✏️" },
+  clock: { color: "lightgray", text: "⏰" },
+};
+
+const utils = { formatPercent, groupBy, printProgress, styles };
+
 if (typeof module !== "undefined") {
-  module.exports = { formatPercent, groupBy, printProgress };
+  module.exports = utils;
 }
